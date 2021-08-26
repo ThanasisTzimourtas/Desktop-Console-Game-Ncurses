@@ -42,8 +42,8 @@ public:
 	Engine (); // constructor
   ~Engine ();
 
-	void read_map ();
-	void startparameters ();
+  void read_map ();
+  void startparameters ();
   void display_map ();
   void display_hero (int, int);
   void display_gnome (int, int);

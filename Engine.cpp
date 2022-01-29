@@ -1,6 +1,5 @@
 #include "Engine.h"
 
-
 Engine::Engine ():player(*(new Hero )), gnome(*(new Gnome )), troll(*(new Troll )){
   clear ();
   num_gems = 0;
@@ -11,7 +10,26 @@ Engine::Engine ():player(*(new Hero )), gnome(*(new Gnome )), troll(*(new Troll 
   init_pair(1, COLOR_RED, COLOR_BLACK);
   attron(COLOR_PAIR(1));
   windowname_map ();
-  read_map ();
+  read_map (mapname);
+  checkspawn ();
+  startparameters ();
+  display_map ();
+  display_engine_stats ();
+  gems ('@');
+  refresh ();
+}
+
+
+Engine::Engine (std::string mapname):player(*(new Hero )), gnome(*(new Gnome )), troll(*(new Troll )){
+  clear ();
+  num_gems = 0;
+  score = 0;
+  num_gems = 0;
+
+  start_color();
+  init_pair(1, COLOR_RED, COLOR_BLACK);
+  attron(COLOR_PAIR(1));
+  read_map (mapname);
   checkspawn ();
   startparameters ();
   display_map ();
@@ -26,6 +44,7 @@ Engine::~Engine (){
   endwin ();
 
 }
+
 
 int Engine::get_curx (){return curx;}
 int Engine::get_cury (){return cury;}
@@ -50,11 +69,11 @@ void Engine::startparameters (){
 	curs_set(0);
 }
 
-void Engine::read_map (){
+void Engine::read_map (std::string mapname){
 	int i =0, j = 0;
 	int width = 0;
 	std::ifstream in;
-	in.open(mapname);
+	in.open("Maps/"+ mapname);
 
 	while (!in.eof()){
 		char next = in.get();
@@ -462,35 +481,25 @@ while(1){
 
   fisrtFlag = TRUE;
 
-	while(fisrtFlag && num_gems < 2){
+	while(fisrtFlag && num_gems < 10){
     usleep(100000);
     display_name(player.getname (), player.getsize());
     player.move(get_curx(), get_cury());
     display_hero(player.getmovex(), player.getmovey());
-
-
     troll.movetroll(gettrollx(), gettrolly(), player.getmovex(), player.getmovey());
     display_troll(troll.getmovex(), troll.getmovey());
-
     gnome.movegnome(getgnomex(), getgnomey(), player.getmovex(), player.getmovey());
     display_gnome(gnome.getmovex(), gnome.getmovey());
-
-
     npc_responses ();
 
     if ((curx == gnomex && cury == gnomey) || (curx == trollx && cury == trolly)){
       lost ();
       fisrtFlag = FALSE;
     }
-
     takegem();
     printscore();
     refresh ();
-
-
-
 	}
-
   move(posgem_y, posgem_x);
   addch(' ');
   gems('p');
@@ -500,8 +509,6 @@ while(1){
   else{
     Flag = FALSE;
   }
-
-
   while(Flag){
     usleep(100000);
     if ((curx == gnomex && cury == gnomey) || (curx == trollx && cury == trolly)){
@@ -512,30 +519,23 @@ while(1){
     display_name(player.getname (), player.getsize());
     player.move(get_curx(), get_cury());
     display_hero(player.getmovex(), player.getmovey());
-
     troll.movetroll(gettrollx(), gettrolly(),player.getmovex(), player.getmovey());
     display_troll(troll.getmovex(), troll.getmovey());
-
 	  gnome.movegnome(getgnomex(), getgnomey(),player.getmovex(), player.getmovey());
     display_gnome(gnome.getmovex(), gnome.getmovey());
-
     npc_responses ();
 
     if ((curx == gnomex && cury == gnomey) || (curx == trollx && cury == trolly)){
       lost ();
       Flag = FALSE;
     }
-
     if(takepapyrus()){
       printscore();
       Flag = FALSE;
     }
-
-
   }
 
   player.setplayerscore (getscore());
-
   sleep (1);
   break;
   }

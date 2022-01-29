@@ -35,15 +35,18 @@ private:
   std::string mapname;
 
 
+
 public:
   Gnome &gnome;
   Hero &player;
   Troll &troll;
-	Engine (); // constructor
+  
+  Engine();
+	Engine (std::string); // constructor
   ~Engine ();
 
-  void read_map ();
-  void startparameters ();
+	void read_map (std::string);
+	void startparameters ();
   void display_map ();
   void display_hero (int, int);
   void display_gnome (int, int);
@@ -76,6 +79,9 @@ public:
   const char menu ();
   void play ();
 	//void PrintScore() ;
+
+  void readfromfile (std::string);
+  void listofscores (std::string, int);
 
   bool Flag;
   bool fisrtFlag;

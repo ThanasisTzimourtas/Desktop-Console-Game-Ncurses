@@ -41,8 +41,8 @@ void HiScore::operator<< (Hero *h){
   }
 }
 
-void HiScore::printinfile (){
-  std::fstream F("HiScore.bin",std::ios::in| std::ios::out|std::ios::trunc);
+void HiScore::printinfile (std::string filename){
+  std::fstream F("SavedScores/" + filename +".bin",std::ios::in| std::ios::out|std::ios::trunc);
   F << "HiScores from the game Mpampis Poteridis:";
   for (int i = 0; i < times; i++){
     int namesize = tablesocres[i]->getsize();
@@ -51,7 +51,7 @@ void HiScore::printinfile (){
     for (int j =namesize-1; j>=0; j--){
       str += hname[j]+48;
     }
-    F <<"\nName: "<< str <<", Score: "<<tablesocres[i]->getplayerscore();
+    F <<"\nName: "<< str <<", Score: "<<tablesocres[i]->getplayerscore() << ";";
   }
   F.close();
 }

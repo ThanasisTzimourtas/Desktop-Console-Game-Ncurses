@@ -24,7 +24,7 @@ private:
   size_t size;
   int times;
   int val;
-  
+
   Hero **tablesocres;
   //std::list <Hero> herostats;
   //std::list <Hero>::iterator ilist;
@@ -38,7 +38,7 @@ public:
   void showhighscore ();
   void appendscore(Hero);
   void print ();
-  void printinfile ();
+  void printinfile (std::string);
   void operator<< (Hero *);
 
 
